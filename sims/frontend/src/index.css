@@ -1,0 +1,50 @@
+/* =============================================
+   Global Styles - Student Internship Management System
+   ============================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+/* Link hover effects */
+a:hover {
+  opacity: 0.85;
+}
+
+/* Input focus styles */
+input:focus, textarea:focus, select:focus {
+  border-color: #e94560 !important;
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+}
+
+/* Button hover effect */
+button:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

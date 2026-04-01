@@ -1,0 +1,222 @@
+{
+  "info": {
+    "name": "SIMS - Student Internship Management System",
+    "_postman_id": "sims-api-collection",
+    "description": "Complete API collection for testing all SIMS endpoints.\n\nSetup:\n1. Start the Spring Boot backend\n2. Run 'Register Student' or 'Login' first\n3. Copy the 'token' from the response\n4. Set it as the {{token}} collection variable\n5. All protected requests will use it automatically",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api" },
+    { "key": "token",   "value": "PASTE_YOUR_JWT_TOKEN_HERE" }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Register - Student",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Student\",\n  \"email\": \"student@test.com\",\n  \"password\": \"password123\",\n  \"role\": \"STUDENT\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register - Company",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Company\",\n  \"email\": \"company@test.com\",\n  \"password\": \"password123\",\n  \"role\": \"COMPANY\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Register - Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@test.com\",\n  \"password\": \"password123\",\n  \"role\": \"ADMIN\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login - Student",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"arjun@student.com\",\n  \"password\": \"password123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login - Company",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"techcorp@company.com\",\n  \"password\": \"password123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login - Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@sims.com\",\n  \"password\": \"password123\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💼 Internships",
+      "item": [
+        {
+          "name": "Get All Internships (Public)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/internships"
+          }
+        },
+        {
+          "name": "Get Internship by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/internships/1"
+          }
+        },
+        {
+          "name": "Post Internship (Company Token Required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/internships",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Android Developer Intern\",\n  \"description\": \"Work on our Android app using Kotlin and Jetpack Compose.\",\n  \"location\": \"Hyderabad\",\n  \"duration\": \"3 months\",\n  \"stipend\": \"12000/month\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Internship (Company Token Required)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/internships/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Java Backend Intern\",\n  \"description\": \"Updated description for the role.\",\n  \"location\": \"Hyderabad\",\n  \"duration\": \"6 months\",\n  \"stipend\": \"20000/month\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Internship (Admin Token Required)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/internships/1"
+          }
+        },
+        {
+          "name": "Get My Postings (Company Token Required)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/internships/my-postings"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📋 Applications",
+      "item": [
+        {
+          "name": "Apply to Internship (Student Token Required)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/applications",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"internshipId\": 2,\n  \"coverLetter\": \"I am very interested in this role and have relevant experience.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Applications (Role-Based)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/applications"
+          }
+        },
+        {
+          "name": "Get My Applications (Student Token Required)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/applications/my-applications"
+          }
+        },
+        {
+          "name": "Accept Application (Company/Admin Token Required)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/applications/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACCEPTED\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reject Application (Company/Admin Token Required)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": "{{baseUrl}}/applications/2",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"REJECTED\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
