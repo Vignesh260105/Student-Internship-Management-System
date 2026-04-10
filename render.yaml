@@ -29,11 +29,11 @@ services:
       - key: SPRING_DATASOURCE_PASSWORD
         value: password
 
-  - type: web
+  - type: static
     name: sims-frontend
-    env: static
+    env: node
     buildCommand: npm install && npm run build
-    staticPublishPath: build
+    publishPath: build
     envVars:
       - key: REACT_APP_API_URL
         fromService:
