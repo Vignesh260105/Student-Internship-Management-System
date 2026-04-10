@@ -28,15 +28,5 @@ services:
         value: root
       - key: SPRING_DATASOURCE_PASSWORD
         value: password
-
-  - type: static
-    name: sims-frontend
-    env: node
-    buildCommand: npm install && npm run build
-    publishPath: build
-    envVars:
-      - key: REACT_APP_API_URL
-        fromService:
-          name: sims-backend
-          type: web
-          property: host
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
