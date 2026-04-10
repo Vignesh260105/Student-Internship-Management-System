@@ -1,42 +1,42 @@
 services:
-  # 1. MySQL Database Service (Internal only)
-    - type: pserv
-        name: sims-db
-            runtime: docker
-                dockerContext: database
-                    dockerfilePath: Dockerfile
-                        plan: free
-                            envVars:
-                                  - key: MYSQL_DATABASE
-                                          value: sims_db
-                                                - key: MYSQL_ROOT_PASSWORD
-                                                        value: 123456
+  - type: pserv
+    name: sims-db
+    env: docker
+    dockerContext: database
+    dockerfilePath: Dockerfile
+    plan: free
+    region: singapore
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: password
+      - key: MYSQL_DATABASE
+        value: sims
 
-                                                          # 2. Spring Boot Backend Service
-                                                            - type: web
-                                                                name: sims-backend
-                                                                    runtime: docker
-                                                                        dockerContext: backend
-                                                                            dockerfilePath: Dockerfile
-                                                                                plan: free
-                                                                                    healthCheckPath: /api/internships
-                                                                                        envVars:
-                                                                                              - key: SPRING_DATASOURCE_URL
-                                                                                                      value: jdbc:mysql://sims-db:3306/sims_db?createDatabaseIfNotExist=true
-                                                                                                            - key: SPRING_DATASOURCE_USERNAME
-                                                                                                                    value: root
-                                                                                                                          - key: SPRING_DATASOURCE_PASSWORD
-                                                                                                                                  value: 123456
-                                                                                                                                        - key: SPRING_JPA_HIBERNATE_DDL_AUTO
-                                                                                                                                                value: update
-                                                                                                                                                
-                                                                                                                                                  # 3. React Frontend (Static Site)
-                                                                                                                                                    - type: static
-                                                                                                                                                        name: sims-frontend
-                                                                                                                                                            buildCommand: npm install && npm run build
-                                                                                                                                                                publishPath: build
-                                                                                                                                                                    rootDir: frontend
-                                                                                                                                                                        envVars:
-                                                                                                                                                                              - key: REACT_APP_API_BASE_URL
-                                                                                                                                                                                      value: https://sims-backend.onrender.com/api # Replace with your actual backend URL after first deploy
-                                                                                                                                                                                      
+  - type: web
+    name: sims-backend
+    env: docker
+    dockerContext: .
+    dockerfilePath: backend/Dockerfile
+    plan: free
+    region: singapore
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://sims-db/sims
+      - key: SPRING_DATASOURCE_USERNAME
+        value: root
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: password
+
+  - type: web
+    name: sims-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    publishPath: build
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          name: sims-backend
+          type: web
+          property: host
