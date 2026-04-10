@@ -2,7 +2,7 @@ services:
 - type: web
   name: sims-db
   env: docker
-  dockerContext: .
+  dockerContext: database
   dockerfilePath: database/Dockerfile
   plan: free
   region: singapore
